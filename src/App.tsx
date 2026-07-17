@@ -311,7 +311,9 @@ export default function App() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to communicate with server");
+        const errorObj = new Error(data.error || "Failed to communicate with server") as any;
+        errorObj.isConfigError = data.isConfigError;
+        throw errorObj;
       }
 
       const botMsg: ChatMessage = { sender: "bot", text: data.response, timestamp: new Date() };
@@ -319,11 +321,11 @@ export default function App() {
     } catch (err: any) {
       console.error("Chat error:", err);
       // Fallback response with beautiful helpful instructions
-      let errMsg = "I encountered an issue connecting to my live Gemini engine.";
-      if (err.message?.includes("GEMINI_API_KEY") || err.message?.includes("Secrets")) {
+      let errMsg = "";
+      if (err.isConfigError || err.message?.includes("GEMINI_API_KEY") || err.message?.includes("Secrets") || err.message?.includes("not set")) {
         errMsg = "I am ready to power Rashid's Live Gemini AI Engine! To activate my real-time responses, please add your **GEMINI_API_KEY** in the **Settings > Secrets** panel in the Google AI Studio UI.\n\nIn the meantime, let me act as Rashid's pre-configured IT system and present the answer from my cache: \n\n*Rashid is fully trained as an IT Support Specialist. His key roles include Canon UniFLOW server setup (port mappings, secure card releases), Webex/Slack ticket queue diagnostics, Powershell USB peripheral monitors, and Windows 11 upgrades. Speak to him or schedule an interview at rashidak77@gmail.com!*";
       } else {
-        errMsg = `Note: To enable live Gemini responses, please make sure to add your GEMINI_API_KEY inside the Secrets panel. Here is a stored summary of Rashid's specialized printer SME background: Rashid administers Canon imageRUNNER DX printers by mapping custom LPR/RAW TCP ports, linking security releases with company badges, and writing PowerShell scripts to query endpoint assets.`;
+        errMsg = `The Gemini Live API encountered an error (${err.message}). If you have already added your GEMINI_API_KEY inside the Secrets panel, please verify that it is correct and has appropriate permissions.\n\nHere is a stored summary of Rashid's specialized printer SME background in the meantime:\n\n*Rashid administers Canon imageRUNNER DX printers by mapping custom LPR/RAW TCP ports, linking security releases with company badges, and writing PowerShell scripts to query endpoint assets. Speak to him or schedule an interview at rashidak77@gmail.com!*`;
       }
       
       const botMsg: ChatMessage = { 

@@ -99,28 +99,16 @@ app.post("/api/chat", async (req, res) => {
 
     try {
       const chat = ai.chats.create({
-        model: "gemini-2.5-flash",
+        model: "gemini-3.5-flash",
         config: {
           systemInstruction: RASHID_RESUME_CONTEXT,
         },
       });
       const response = await chat.sendMessage({ message });
       responseText = response.text;
-    } catch (primaryError: any) {
-      console.warn("Primary gemini-2.5-flash model overloaded, attempting fallback to gemini-1.5-flash...", primaryError);
-      try {
-        const fallbackChat = ai.chats.create({
-          model: "gemini-1.5-flash",
-          config: {
-            systemInstruction: RASHID_RESUME_CONTEXT,
-          },
-        });
-        const response = await fallbackChat.sendMessage({ message });
-        responseText = response.text;
-      } catch (fallbackError: any) {
-        console.error("Both primary and fallback models failed:", fallbackError);
-        throw fallbackError;
-      }
+    } catch (apiError: any) {
+      console.error("Gemini 3.5 Flash API error:", apiError);
+      throw apiError;
     }
 
     return res.json({ response: responseText });
