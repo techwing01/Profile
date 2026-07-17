@@ -20,14 +20,40 @@ function getGeminiClient(): GoogleGenAI {
     if (!apiKey) {
       throw new Error("GEMINI_API_KEY environment variable is not set. Please set it in Settings > Secrets.");
     }
-    aiClient = new GoogleGenAI({
-      apiKey,
-      httpOptions: {
-        headers: {
-          "User-Agent": "aistudio-build",
+
+    // Isolate from Google Cloud Application Default Credentials (ADC)
+    // which overrides the API Key on Cloud Run and causes 401 unauthenticated errors.
+    const savedEnv: Record<string, string | undefined> = {};
+    const varsToClear = [
+      "GOOGLE_APPLICATION_CREDENTIALS",
+      "GOOGLE_GCLOUD_ADC_JSON",
+      "GCLOUD_PROJECT",
+      "GCP_PROJECT",
+      "GOOGLE_CLOUD_PROJECT",
+    ];
+
+    for (const v of varsToClear) {
+      savedEnv[v] = process.env[v];
+      delete process.env[v];
+    }
+
+    try {
+      aiClient = new GoogleGenAI({
+        apiKey,
+        httpOptions: {
+          headers: {
+            "User-Agent": "aistudio-build",
+          },
         },
-      },
-    });
+      });
+    } finally {
+      // Restore environment variables
+      for (const v of varsToClear) {
+        if (savedEnv[v] !== undefined) {
+          process.env[v] = savedEnv[v];
+        }
+      }
+    }
   }
   return aiClient;
 }
