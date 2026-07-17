@@ -1,0 +1,6 @@
+{
+  "name": "Systech Engineer Portfolio",
+  "description": "Interactive 3D workspace and peripheral monitoring dashboard for Rashid AK, featuring a VNC remote controller, printer installer, ticket tracker, and AI troubleshooting assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
