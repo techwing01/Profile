@@ -445,15 +445,14 @@ export default function App() {
           </div>
 
           {/* Tab Navigation Menu */}
-          <div className="bg-slate-900/40 rounded-2xl border border-slate-800/60 p-2 grid grid-cols-3 sm:grid-cols-7 lg:grid-cols-3 gap-1.5 backdrop-blur-md">
+          <div className="bg-slate-900/40 rounded-2xl border border-slate-800/60 p-2 grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 gap-1.5 backdrop-blur-md">
             {[
               { id: "profile", label: "Profile", icon: <User className="w-3.5 h-3.5" /> },
               { id: "powershell", label: "PowerShell", icon: <Terminal className="w-3.5 h-3.5" /> },
               { id: "printer", label: "Canon SME", icon: <Printer className="w-3.5 h-3.5" /> },
               { id: "tickets", label: "Support Queue", icon: <Headphones className="w-3.5 h-3.5" /> },
               { id: "interview", label: "Interview", icon: <Laptop className="w-3.5 h-3.5" /> },
-              { id: "ai", label: "AI Troubleshoot", icon: <Sparkles className="w-3.5 h-3.5" /> },
-              { id: "vercel", label: "Vercel Deploy", icon: <Globe className="w-3.5 h-3.5" /> }
+              { id: "ai", label: "AI Troubleshoot", icon: <Sparkles className="w-3.5 h-3.5" /> }
             ].map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -1294,106 +1293,6 @@ export default function App() {
                     </div>
                   </div>
 
-                </motion.div>
-              )}
-
-              {/* TAB 7: VERCEL DEPLOYMENT PORTAL */}
-              {activeTab === "vercel" && (
-                <motion.div
-                  key="vercel"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="space-y-4"
-                >
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                    <div className="flex items-center gap-2">
-                      <Globe className="w-5 h-5 text-blue-400 animate-pulse" />
-                      <h3 className="text-md font-bold tracking-wide text-slate-200">VERCEL CLOUD DEPLOYMENT PORTAL</h3>
-                    </div>
-                    <span className="text-[10px] bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-lg font-mono border border-blue-500/20">PRODUCTION READY</span>
-                  </div>
-
-                  <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                    This 3D Personal Website is pre-structured for **one-click deployment on Vercel**. The setup isolates and proxies the Gemini AI API keys using a Vercel Serverless Function to keep secrets secure from the browser client.
-                  </p>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Left Box: Configuration settings overview */}
-                    <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-3 text-xs">
-                      <span className="text-[10px] text-slate-500 uppercase tracking-wider font-mono">Build & Environment Specs</span>
-                      <div className="space-y-2 font-mono text-[10.5px]">
-                        <div className="bg-slate-900 p-2 rounded border border-slate-800 flex justify-between">
-                          <span className="text-slate-500">FRAMEWORK:</span>
-                          <span className="text-blue-400">Vite (React TS)</span>
-                        </div>
-                        <div className="bg-slate-900 p-2 rounded border border-slate-800 flex justify-between">
-                          <span className="text-slate-500">BUILD SCRIPT:</span>
-                          <span className="text-slate-300">npm run build</span>
-                        </div>
-                        <div className="bg-slate-900 p-2 rounded border border-slate-800 flex justify-between">
-                          <span className="text-slate-500">OUTPUT DIR:</span>
-                          <span className="text-slate-300">dist/</span>
-                        </div>
-                        <div className="bg-slate-900 p-2 rounded border border-slate-800 flex justify-between">
-                          <span className="text-slate-500">ROUTING RULES:</span>
-                          <span className="text-emerald-400">/vercel.json active</span>
-                        </div>
-                        <div className="bg-slate-900 p-2 rounded border border-slate-800 flex justify-between">
-                          <span className="text-slate-500">API RUNTIME:</span>
-                          <span className="text-purple-400">@vercel/node (Serverless)</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Right Box: Environment Secrets */}
-                    <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-3 flex flex-col justify-between">
-                      <div className="space-y-2">
-                        <span className="text-[10px] text-slate-500 uppercase tracking-wider font-mono">Required Environment Keys</span>
-                        <p className="text-[11px] text-slate-400 leading-snug font-sans">
-                          To power the live chatbot, you must add the following secret in your Vercel Project Settings:
-                        </p>
-                        <div className="bg-slate-900 p-2.5 rounded-lg border border-slate-800/80 font-mono text-xs flex justify-between items-center text-slate-200">
-                          <span className="text-blue-400 font-bold">GEMINI_API_KEY</span>
-                          <span className="text-[9px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-mono border border-emerald-500/20">Secret Required</span>
-                        </div>
-                      </div>
-                      <p className="text-[10px] text-slate-500 italic font-sans">
-                        Never prefix this secret with VITE_ to prevent leaking it in compiled bundles!
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Deploy steps console */}
-                  <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-800 font-mono text-xs">
-                    <span className="text-[10px] text-slate-500 uppercase tracking-wider block mb-2">Step-by-Step Vercel Deployment</span>
-                    <ol className="space-y-2.5 text-[11px] text-slate-300 list-decimal pl-4 leading-relaxed font-sans">
-                      <li>
-                        <strong className="text-blue-400">Push Project to GitHub:</strong> Ensure all workspace files (including `/vercel.json` and `/api/chat.ts`) are pushed to your remote repository.
-                      </li>
-                      <li>
-                        <strong className="text-blue-400">Connect to Vercel:</strong> Log into Vercel, click **"Add New"** {"->"} **"Project"**, and import your GitHub repository.
-                      </li>
-                      <li>
-                        <strong className="text-blue-400">Configure Build Settings:</strong> Vercel automatically detects Vite. Verify Build Command is set to <code className="text-slate-200 bg-slate-900 px-1 py-0.5 rounded border border-slate-800 font-mono">npm run build</code> and Output Directory is <code className="text-slate-200 bg-slate-900 px-1 py-0.5 rounded border border-slate-800 font-mono">dist</code>.
-                      </li>
-                      <li>
-                        <strong className="text-blue-400">Add Secrets:</strong> Expand the **Environment Variables** accordion and add <code className="text-slate-200 bg-slate-900 px-1 py-0.5 rounded border border-slate-800 font-mono">GEMINI_API_KEY</code> with your real-time Google Gemini key.
-                      </li>
-                      <li>
-                        <strong className="text-blue-400">Deploy:</strong> Click **"Deploy"**. Vercel compiles the React code and hosts `/api/chat` as a serverless function!
-                      </li>
-                    </ol>
-                  </div>
-
-                  {/* Local Deploy terminal command snippet */}
-                  <div className="bg-black p-3 rounded-lg border border-slate-800/80 font-mono text-xs text-slate-400 flex items-center justify-between">
-                    <div>
-                      <span className="text-slate-600 mr-2"># Install Vercel CLI & Deploy instantly</span>
-                      <div className="text-slate-200 mt-1">npm install -g vercel && vercel</div>
-                    </div>
-                    <span className="text-[10px] bg-slate-900 px-2 py-0.5 rounded border border-slate-800 text-slate-500">Terminal CLI</span>
-                  </div>
                 </motion.div>
               )}
 
